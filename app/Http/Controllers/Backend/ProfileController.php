@@ -12,6 +12,7 @@ class ProfileController extends Controller {
         return view('admin.profile.index');
     }
 
+    // Update profile
     public function updateProfile(Request $request) {
         $request->validate([
             'name' => 'required',
@@ -39,6 +40,22 @@ class ProfileController extends Controller {
         $user->email = $request->email;
         $user->save();
 
-        return redirect()->back()->with('success', 'Profile updated successfully!');
+        toastr()->success('Profile updated successfully!');
+        return redirect()->back();
+    }
+
+    // Update password
+    public function updatePassword(Request $request) {
+        $request->validate([
+            'current_password' => ['required', 'current_password'],
+            'password' => ['required', 'confirmed', 'min:3']
+        ]);
+
+        $request->user()->update([
+            'password' => bcrypt($request->password)
+        ]);
+
+        toastr()->success('Password updated successfully!');
+        return redirect()->back();
     }
 }
