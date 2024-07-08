@@ -21,19 +21,25 @@ class AuthenticatedSessionController extends Controller {
      * Handle an incoming authentication request.
      */
     public function store(LoginRequest $request): RedirectResponse {
-        $request->authenticate();
+        try {
+            $request->authenticate();
 
-        $request->session()->regenerate();
+            $request->session()->regenerate();
 
-        if ($request->user()->role === 'admin') {
-            return redirect()->intended(route('admin.dashboard', absolute: false));
+            if ($request->user()->role === 'admin') {
+                return redirect()->intended(route('admin.dashboard', absolute: false));
+            }
+
+            if ($request->user()->role === 'vendor') {
+                return redirect()->intended(route('vendor.dashboard', absolute: false));
+            }
+
+            return redirect()->intended(route('dashboard', absolute: false));
+        } catch (\Exception $e) {
+            return redirect(route('login') . '#pills-login')
+                ->withInput($request->only('email', 'remember'))
+                ->withErrors(['email' => trans('auth.failed')]);
         }
-
-        if ($request->user()->role === 'vendor') {
-            return redirect()->intended(route('vendor.dashboard', absolute: false));
-        }
-
-        return redirect()->intended(route('dashboard', absolute: false));
     }
 
     /**

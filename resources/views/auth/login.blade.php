@@ -24,23 +24,27 @@
           <div class="wsus__login_reg_area">
             <ul class="nav nav-pills mb-3" id="pills-tab2" role="tablist">
               <li class="nav-item" role="presentation">
-                <button class="nav-link active" id="pills-home-tab2"
-                  data-bs-toggle="pill" data-bs-target="#pills-login"
-                  type="button" role="tab" aria-controls="pills-login"
-                  aria-selected="true">login</button>
+                <button
+                  class="nav-link {{ session('tab') == 'signup' ? '' : 'active' }}"
+                  id="pills-home-tab2" data-bs-toggle="pill"
+                  data-bs-target="#pills-login" type="button" role="tab"
+                  aria-controls="pills-login" aria-selected="true">login</button>
               </li>
               <li class="nav-item" role="presentation">
-                <button class="nav-link" id="pills-profile-tab2"
-                  data-bs-toggle="pill" data-bs-target="#pills-signup"
-                  type="button" role="tab" aria-controls="pills-signup"
+                <button
+                  class="nav-link {{ session('tab') == 'signup' ? 'active' : '' }}"
+                  id="pills-profile-tab2" data-bs-toggle="pill"
+                  data-bs-target="#pills-signup" type="button" role="tab"
+                  aria-controls="pills-signup"
                   aria-selected="true">signup</button>
               </li>
             </ul>
             <div class="tab-content" id="pills-tabContent2">
-              <div class="tab-pane fade show active" id="pills-login"
-                role="tabpanel" aria-labelledby="pills-home-tab2">
+              <div
+                class="tab-pane fade {{ session('tab') == 'signup' ? '' : 'show active' }}"
+                id="pills-login" role="tabpanel"
+                aria-labelledby="pills-home-tab2">
                 <div class="wsus__login">
-
                   <form method="POST" action="{{ route('login') }}">
                     @csrf
                     <div class="wsus__login_input">
@@ -78,10 +82,11 @@
                       </li>
                     </ul>
                   </form>
-
                 </div>
               </div>
-              <div class="tab-pane fade" id="pills-signup" role="tabpanel"
+              <div
+                class="tab-pane fade {{ session('tab') == 'signup' ? 'show active' : '' }}"
+                id="pills-signup" role="tabpanel"
                 aria-labelledby="pills-profile-tab2">
                 <div class="wsus__login">
                   <form method="POST" action="{{ route('register') }}">
