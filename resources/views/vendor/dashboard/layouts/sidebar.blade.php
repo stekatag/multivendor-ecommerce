@@ -16,7 +16,7 @@
         Reviews</a></li>
     <li><a href="dsahboard_wishlist.html"><i class="far fa-heart"></i>
         Wishlist</a></li>
-    <li><a href="dsahboard_profile.html"><i class="far fa-user"></i> My
+    <li><a href="{{ route('vendor.profile') }}"><i class="far fa-user"></i> My
         Profile</a></li>
     <li><a href="dsahboard_address.html"><i class="fal fa-gift-card"></i>
         Addresses</a></li>
