@@ -1,19 +1,19 @@
 <?php
 
-namespace App\Http\Controllers\Backend;
+namespace App\Http\Controllers\Frontend;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 
-class ProfileController extends Controller {
+class UserProfileController extends Controller {
     public function index() {
-        return view('admin.profile.index');
+        return view('frontend.dashboard.profile');
     }
 
-    // Update profile
     public function updateProfile(Request $request) {
+        // Update user profile
         $request->validate([
             'name' => ['required', 'max:255'],
             'email' => ['required', 'email', 'unique:users,email,' . Auth::user()->id],
@@ -41,21 +41,6 @@ class ProfileController extends Controller {
         $user->save();
 
         toastr()->success('Profile updated successfully!');
-        return redirect()->back();
-    }
-
-    // Update password
-    public function updatePassword(Request $request) {
-        $request->validate([
-            'current_password' => ['required', 'current_password'],
-            'password' => ['required', 'confirmed', 'min:3']
-        ]);
-
-        $request->user()->update([
-            'password' => bcrypt($request->password)
-        ]);
-
-        toastr()->success('Password updated successfully!');
         return redirect()->back();
     }
 }
