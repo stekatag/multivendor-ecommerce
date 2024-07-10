@@ -22,6 +22,19 @@
       <li class="dropdown">
         <a href="#" class="nav-link has-dropdown"
           data-toggle="dropdown"><i class="fas fa-columns"></i>
+          <span>Manage Sections</span>
+        </a>
+        <ul class="dropdown-menu">
+          <li>
+            <a class="nav-link" href="{{ route('admin.slider.index') }}">Slider
+            </a>
+          </li>
+        </ul>
+      </li>
+
+      {{-- <li class="dropdown">
+        <a href="#" class="nav-link has-dropdown"
+          data-toggle="dropdown"><i class="fas fa-columns"></i>
           <span>Layout</span>
         </a>
         <ul class="dropdown-menu">
@@ -33,10 +46,11 @@
           <li><a class="nav-link" href="layout-top-navigation.html">Top
               Navigation</a></li>
         </ul>
-      </li>
-      <li><a class="nav-link" href="blank.html"><i class="far fa-square"></i>
+      </li> --}}
+
+      {{-- <li><a class="nav-link" href="blank.html"><i class="far fa-square"></i>
           <span>Blank Page</span></a>
-      </li>
+      </li> --}}
       </li>
     </ul>
   </aside>
