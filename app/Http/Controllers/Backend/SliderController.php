@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Backend;
 
+use App\DataTables\SliderDataTable;
 use App\Http\Controllers\Controller;
 use App\Models\Slider;
 use App\Traits\ImageUploadTrait;
@@ -12,8 +13,8 @@ class SliderController extends Controller {
     /**
      * Display a listing of the resource.
      */
-    public function index() {
-        return view('admin.slider.index');
+    public function index(SliderDataTable $dataTable) {
+        return $dataTable->render('admin.slider.index');
     }
 
     /**
@@ -54,7 +55,7 @@ class SliderController extends Controller {
 
         toastr()->success('Slider created successfully!');
 
-        return redirect()->back();
+        return redirect()->route('admin.slider.index');
     }
 
     /**
@@ -68,14 +69,44 @@ class SliderController extends Controller {
      * Show the form for editing the specified resource.
      */
     public function edit(string $id) {
-        //
+        $slider = Slider::findOrFail($id);
+
+        return view('admin.slider.edit', compact('slider'));
     }
 
     /**
      * Update the specified resource in storage.
      */
     public function update(Request $request, string $id) {
-        //
+        $request->validate([
+            'banner' => ['nullable', 'image', 'mimes:jpeg,png,jpg,svg', 'max:2048'],
+            'subtitle' => ['string', 'max:255'],
+            'title' => ['required', 'max:255'],
+            'starting_price' => ['max:255'],
+            'btn_url' => ['url'],
+            'serial' => ['required'],
+            'status' => ['required'],
+        ]);
+
+        $slider = Slider::findOrFail($id);
+
+        // Handle file upload
+        $imagePath = $this->updateImage($request, 'banner', 'uploads/sliders', $slider->banner);
+
+        // Save slider data
+        $slider->banner = empty(!$imagePath) ? $imagePath : $slider->banner; // If an image is uploaded then save it otherwise save the existing image
+        $slider->subtitle = $request->subtitle;
+        $slider->title = $request->title;
+        $slider->starting_price = $request->starting_price;
+        $slider->btn_url = $request->btn_url;
+        $slider->serial = $request->serial;
+        $slider->status = $request->status;
+
+        $slider->save();
+
+        toastr()->success('Slider updated successfully!');
+
+        return redirect()->route('admin.slider.index');
     }
 
     /**
