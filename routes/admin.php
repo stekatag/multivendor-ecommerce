@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Backend\AdminController;
+use App\Http\Controllers\Backend\CategoryController;
 use App\Http\Controllers\Backend\ProfileController;
 use App\Http\Controllers\Backend\SliderController;
 
@@ -19,4 +20,7 @@ Route::middleware(['web', 'auth', 'role:admin'])
 
     // Slider Route
     Route::resource('slider', SliderController::class);
+
+    // Category Route
+    Route::resource('category', CategoryController::class);
   });
