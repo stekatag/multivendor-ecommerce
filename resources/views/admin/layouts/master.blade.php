@@ -25,6 +25,8 @@
     <link rel="stylesheet"
       href="{{ asset('backend/assets/modules/summernote/summernote-bs4.css') }}">
     <link rel="stylesheet"
+      href="{{ asset('backend/assets/css/bootstrap-iconpicker.min.css') }}">
+    <link rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
     <link rel="stylesheet"
       href="https://cdn.datatables.net/2.0.8/css/dataTables.dataTables.min.css">
@@ -109,6 +111,9 @@
       src="{{ asset('backend/assets/modules/chocolat/dist/js/jquery.chocolat.min.js') }}">
     </script>
     <script
+      src="{{ asset('backend/assets/js/bootstrap-iconpicker.bundle.min.js') }}">
+    </script>
+    <script
       src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js">
     </script>
     <script src="https://cdn.datatables.net/2.0.8/js/dataTables.min.js"></script>
@@ -182,11 +187,7 @@
 
                 },
                 error: function(xhr, status, error) {
-                  Swal.fire({
-                    title: "Error!",
-                    text: xhr.responseJSON.message,
-                    icon: "error"
-                  });
+                  console.log(error);
                 }
               })
             }
