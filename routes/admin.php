@@ -22,5 +22,6 @@ Route::middleware(['web', 'auth', 'role:admin'])
     Route::resource('slider', SliderController::class);
 
     // Category Route
+    Route::put('category/change-status', [CategoryController::class, 'changeStatus'])->name('category.change-status');
     Route::resource('category', CategoryController::class);
   });

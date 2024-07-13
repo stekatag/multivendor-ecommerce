@@ -30,10 +30,19 @@ class CategoryDataTable extends DataTable {
                 return '<i style="font-size: 20px;" class="' . $query->icon . '"></i>';
             })
             ->addColumn('status', function ($query) {
-                $button = '<label class="custom-switch mt-2">
-                                <input type="checkbox" name="custom-switch-checkbox" class="custom-switch-input">
+                if ($query->status == 1) { // Active status
+                    $button = '<label class="custom-switch mt-2">
+                                <input type="checkbox" checked name="custom-switch-checkbox" class="custom-switch-input change-status" data-id="' . $query->id . '">
                                 <span class="custom-switch-indicator"></span>
-                            </label>';
+                                <span class="custom-switch-description">Active</span>
+                                </label>';
+                } else { // Inactive status
+                    $button = '<label class="custom-switch mt-2">
+                                <input type="checkbox" name="custom-switch-checkbox" class="custom-switch-input change-status" data-id="' . $query->id . '">
+                                <span class="custom-switch-indicator"></span>
+                                <span class="custom-switch-description">Inactive</span>
+                                </label>';
+                }
                 return $button;
             })
             ->rawColumns(['icon', 'action', 'status'])
@@ -76,7 +85,8 @@ class CategoryDataTable extends DataTable {
             Column::make('id')->width(100),
             Column::make('icon')->width(100),
             Column::make('name'),
-            Column::make('status')->width(100),
+            Column::make('slug'),
+            Column::make('status')->width(200),
             Column::computed('action')
                 ->exportable(false)
                 ->printable(false)

@@ -47,4 +47,40 @@
 
 @push('scripts')
   {{ $dataTable->scripts(attributes: ['type' => 'module']) }}
+
+  <script>
+    $(document).ready(function() {
+      // Change the status of the category with the toggle switch
+      $('body').on('click', '.change-status', function() {
+        let isChecked = $(this).prop('checked');
+        let id = $(this).data('id');
+
+        $.ajaxSetup({
+          headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr(
+              'content')
+          }
+        });
+
+        $.ajax({
+          url: "{{ route('admin.category.change-status') }}",
+          method: 'PUT',
+          data: {
+            status: isChecked,
+            id: id
+          },
+          success: function(data) {
+            toastr.success(data.message);
+          },
+          error: function(xhr, status, error) {
+            toastr.error('An error occurred: ' + error);
+          }
+        });
+
+        // Change the description based on the status
+        $(this).parent().parent().find('.custom-switch-description')
+          .text(isChecked ? 'Active' : 'Inactive');
+      })
+    });
+  </script>
 @endpush
