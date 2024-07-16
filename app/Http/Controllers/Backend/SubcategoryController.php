@@ -60,20 +60,51 @@ class SubcategoryController extends Controller {
      * Show the form for editing the specified resource.
      */
     public function edit(string $id) {
-        //
+        $categories = Category::where('status', true)->get();
+        $subcategory = Subcategory::findOrFail($id);
+
+        return view('admin.subcategory.edit', compact('subcategory', 'categories'));
     }
 
     /**
      * Update the specified resource in storage.
      */
     public function update(Request $request, string $id) {
-        //
+        $request->validate([
+            'category' => ['required', 'exists:categories,id'],
+            'name' => ['required', 'max:255', 'unique:subcategories,name,' . $id],
+            'status' => ['required'],
+        ]);
+
+        $subcategory = Subcategory::findOrFail($id);
+
+        $subcategory->category_id = $request->category;
+        $subcategory->name = $request->name;
+        $subcategory->slug = Str::slug($request->name);
+        $subcategory->status = $request->status;
+
+        $subcategory->save();
+
+        toastr()->success('Subcategory updated successfully!');
+
+        return redirect()->route('admin.subcategory.index');
     }
 
     /**
      * Remove the specified resource from storage.
      */
     public function destroy(string $id) {
-        //
+        $subcategory = Subcategory::findOrFail($id);
+        $subcategory->delete();
+
+        return response(['status' => 'success', 'message' => 'Subcategory deleted successfully!']);
+    }
+
+    public function changeStatus(Request $request) {
+        $subcategory = Subcategory::findOrFail($request->id);
+        $subcategory->status = $request->status == 'true' ? 1 : 0;
+        $subcategory->save();
+
+        return response(['status' => 'success', 'message' => 'Status updated successfully!']);
     }
 }
