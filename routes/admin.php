@@ -5,6 +5,7 @@ use App\Http\Controllers\Backend\AdminController;
 use App\Http\Controllers\Backend\CategoryController;
 use App\Http\Controllers\Backend\ProfileController;
 use App\Http\Controllers\Backend\SliderController;
+use App\Http\Controllers\Backend\SubcategoryController;
 
 // Admin routes
 Route::middleware(['web', 'auth', 'role:admin'])
@@ -24,4 +25,8 @@ Route::middleware(['web', 'auth', 'role:admin'])
     // Category Route
     Route::put('category/change-status', [CategoryController::class, 'changeStatus'])->name('category.change-status');
     Route::resource('category', CategoryController::class);
+
+    // Subcategory Route
+    Route::put('subcategory/change-status', [SubcategoryController::class, 'changeStatus'])->name('subcategory.change-status');
+    Route::resource('subcategory', SubcategoryController::class);
   });
