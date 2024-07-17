@@ -7,6 +7,7 @@ use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\DataTables\CategoryDataTable;
+use App\Models\Subcategory;
 
 class CategoryController extends Controller {
     /**
@@ -93,6 +94,11 @@ class CategoryController extends Controller {
      */
     public function destroy(string $id) {
         $category = Category::findOrFail($id);
+        $subCategory = Subcategory::where('category_id', $id)->count();
+
+        if ($subCategory > 0) {
+            return response(['status' => 'error', 'message' => 'This Category cannot be deleted, because it has subcategories! To delete this category, you must delete all related subcategories first.']);
+        }
 
         $category->delete();
 
