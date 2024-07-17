@@ -1,7 +1,7 @@
 <div class="main-sidebar sidebar-style-2">
   <aside id="sidebar-wrapper">
     <div class="sidebar-brand">
-      <a href="index.html">Stisla</a>
+      <a href="index.html">Admin Dashboard</a>
     </div>
     <div class="sidebar-brand sidebar-brand-sm">
       <a href="index.html">St</a>
@@ -30,6 +30,11 @@
           <li>
             <a class="nav-link"
               href="{{ route('admin.subcategory.index') }}">Subcategory
+            </a>
+          </li>
+          <li>
+            <a class="nav-link"
+              href="{{ route('admin.child-category.index') }}">Child Category
             </a>
           </li>
         </ul>
