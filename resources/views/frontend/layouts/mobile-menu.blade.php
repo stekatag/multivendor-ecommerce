@@ -1,3 +1,18 @@
+@php
+  // Fetching all categories with their subcategories and child categories with only active status (1)
+  $categories = \App\Models\Category::where('status', 1)
+      ->with([
+          'subcategories' => function ($query) {
+              $query->where('status', 1)->with([
+                  'childCategories' => function ($query) {
+                      $query->where('status', 1);
+                  },
+              ]);
+          },
+      ])
+      ->get();
+@endphp
+
 <section id="wsus__mobile_menu">
   <span class="wsus__mobile_menu_close"><i class="fal fa-times"></i></span>
   <ul class="wsus__mobile_menu_header_icon d-inline-flex">
@@ -32,93 +47,62 @@
       <div class="wsus__mobile_menu_main_menu">
         <div class="accordion accordion-flush" id="accordionFlushExample">
           <ul class="wsus_mobile_menu_category">
-            <li><a href="#"><i class="fas fa-star"></i> hot
-                promotions</a></li>
-            <li><a href="#" class="accordion-button collapsed"
-                data-bs-toggle="collapse" data-bs-target="#flush-collapseThreew"
-                aria-expanded="false" aria-controls="flush-collapseThreew"><i
-                  class="fal fa-tshirt"></i> fashion</a>
-              <div id="flush-collapseThreew" class="accordion-collapse collapse"
-                data-bs-parent="#accordionFlushExample">
-                <div class="accordion-body">
-                  <ul>
-                    <li><a href="#">men's</a></li>
-                    <li><a href="#">wemen's</a></li>
-                    <li><a href="#">kid's</a></li>
-                    <li><a href="#">others</a></li>
-                  </ul>
-                </div>
-              </div>
-            </li>
-            <li><a href="#" class="accordion-button collapsed"
-                data-bs-toggle="collapse" data-bs-target="#flush-collapseThreer"
-                aria-expanded="false" aria-controls="flush-collapseThreer"><i
-                  class="fas fa-tv"></i> electronics</a>
-              <div id="flush-collapseThreer" class="accordion-collapse collapse"
-                data-bs-parent="#accordionFlushExample">
-                <div class="accordion-body">
-                  <ul>
-                    <li><a href="#">Consumer Electronic</a></li>
-                    <li><a href="#">Accessories & Parts</a></li>
-                    <li><a href="#">other brands</a></li>
-                  </ul>
-                </div>
-              </div>
-            </li>
-            <li><a href="#" class="accordion-button collapsed"
-                data-bs-toggle="collapse"
-                data-bs-target="#flush-collapseThreerrp" aria-expanded="false"
-                aria-controls="flush-collapseThreerrp"><i
-                  class="fas fa-chair-office"></i>
-                furnicture</a>
-              <div id="flush-collapseThreerrp"
-                class="accordion-collapse collapse"
-                data-bs-parent="#accordionFlushExample">
-                <div class="accordion-body">
-                  <ul>
-                    <li><a href="#">home</a></li>
-                    <li><a href="#">office</a></li>
-                    <li><a href="#">restaurent</a></li>
-                  </ul>
-                </div>
-              </div>
-            </li>
-            <li><a href="#" class="accordion-button collapsed"
-                data-bs-toggle="collapse"
-                data-bs-target="#flush-collapseThreerrw" aria-expanded="false"
-                aria-controls="flush-collapseThreerrw"><i
-                  class="fal fa-mobile"></i> Smart
-                Phones</a>
-              <div id="flush-collapseThreerrw"
-                class="accordion-collapse collapse"
-                data-bs-parent="#accordionFlushExample">
-                <div class="accordion-body">
-                  <ul>
-                    <li><a href="#">apple</a></li>
-                    <li><a href="#">xiaomi</a></li>
-                    <li><a href="#">oppo</a></li>
-                    <li><a href="#">samsung</a></li>
-                    <li><a href="#">vivo</a></li>
-                    <li><a href="#">others</a></li>
-                  </ul>
-                </div>
-              </div>
-            </li>
-            <li><a href="#"><i class="fas fa-home-lg-alt"></i> Home
-                & Garden</a></li>
-            <li><a href="#"><i class="far fa-camera"></i>
-                Accessories</a></li>
-            <li><a href="#"><i class="fas fa-heartbeat"></i> healthy
-                & Beauty</a></li>
-            <li><a href="#"><i class="fal fa-gift-card"></i> Gift
-                Ideas</a></li>
-            <li><a href="#"><i class="fal fa-gamepad-alt"></i> Toy &
-                Games</a></li>
-            <li><a href="#"><i class="fal fa-gem"></i> View All
-                Categories</a></li>
+            @foreach ($categories as $categoryIndex => $categoryItem)
+              <li>
+                <a href="#"
+                  class="{{ count($categoryItem->subcategories) > 0 ? 'accordion-button' : '' }} collapsed"
+                  data-bs-toggle="collapse"
+                  data-bs-target="#flush-collapseThreew-{{ $categoryIndex }}"
+                  aria-expanded="false"
+                  aria-controls="flush-collapseThreew-{{ $categoryIndex }}">
+                  <i class="{{ $categoryItem->icon }}"></i>
+                  {{ $categoryItem->name }}
+                </a>
+                @if (count($categoryItem->subcategories) > 0)
+                  <div id="flush-collapseThreew-{{ $categoryIndex }}"
+                    class="accordion-collapse collapse"
+                    data-bs-parent="#accordionFlushExample">
+                    <div class="accordion-body" id="accordionFlushExample-2">
+                      <ul>
+                        @foreach ($categoryItem->subcategories as $subcategoryIndex => $subcategoryItem)
+                          <li>
+                            <a href="#"
+                              class="{{ count($subcategoryItem->childCategories) > 0 ? 'accordion-button' : '' }} collapsed"
+                              data-bs-toggle="collapse"
+                              data-bs-target="#flush-collapseChildren-{{ $categoryIndex }}-{{ $subcategoryIndex }}"
+                              aria-expanded="false"
+                              aria-controls="flush-collapseChildren-{{ $categoryIndex }}-{{ $subcategoryIndex }}">
+                              {{ $subcategoryItem->name }}
+                            </a>
+                            @if (count($subcategoryItem->childCategories) > 0)
+                              <div
+                                id="flush-collapseChildren-{{ $categoryIndex }}-{{ $subcategoryIndex }}"
+                                class="accordion-collapse collapse"
+                                data-bs-parent="#accordionFlushExample-2">
+                                <div class="accordion-body-level-2">
+                                  <ul>
+                                    @foreach ($subcategoryItem->childCategories as $childCategoryIndex => $childCategoryItem)
+                                      <li>
+                                        <a
+                                          href="#">{{ $childCategoryItem->name }}</a>
+                                      </li>
+                                    @endforeach
+                                  </ul>
+                                </div>
+                              </div>
+                            @endif
+                          </li>
+                        @endforeach
+                      </ul>
+                    </div>
+                  </div>
+                @endif
+              </li>
+            @endforeach
           </ul>
         </div>
       </div>
+
     </div>
     <div class="tab-pane fade" id="pills-profile" role="tabpanel"
       aria-labelledby="pills-profile-tab">
@@ -127,11 +111,10 @@
           <ul>
             <li><a href="index.html">home</a></li>
             <li><a href="#" class="accordion-button collapsed"
-                data-bs-toggle="collapse"
-                data-bs-target="#flush-collapseThree" aria-expanded="false"
+                data-bs-toggle="collapse" data-bs-target="#flush-collapseThree"
+                aria-expanded="false"
                 aria-controls="flush-collapseThree">shop</a>
-              <div id="flush-collapseThree"
-                class="accordion-collapse collapse"
+              <div id="flush-collapseThree" class="accordion-collapse collapse"
                 data-bs-parent="#accordionFlushExample2">
                 <div class="accordion-body">
                   <ul>
