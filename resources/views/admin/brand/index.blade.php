@@ -50,6 +50,11 @@
 
   <script>
     $(document).ready(function() {
+      @if (session()->has('reload'))
+        // Trigger a page reload to ensure everything is displayed correctly
+        window.location.reload();
+      @endif
+
       // Change the status of the category with the toggle switch
       $('body').on('click', '.change-status', function() {
         let isChecked = $(this).prop('checked');

@@ -28,18 +28,19 @@
                 <div class="form-group">
                   <label for="logo">Logo</label>
                   <input type="file" class="form-control" data-tribute="true"
-                    name="logo" id="logo">
+                    name="logo" id="logo" required>
                 </div>
                 <div class="form-group">
                   <label for="name">Brand name</label>
                   <input type="text" class="form-control" data-tribute="true"
-                    placeholder="Brand Ltd." name="name" id="name">
+                    placeholder="Brand Ltd." name="name" id="name"
+                    value="{{ old('name') }}" required>
                 </div>
 
                 <div class="form-group">
                   <label for="is_featured">Featured</label>
-                  <select name="is_featured" id="is_featured"
-                    class="form-control">
+                  <select name="is_featured" id="is_featured" class="form-control"
+                    required>
                     <option value selected>Select</option>
                     <option value="1">Yes</option>
                     <option value="0">No</option>
@@ -48,7 +49,8 @@
 
                 <div class="form-group">
                   <label for="status">Status</label>
-                  <select name="status" id="status" class="form-control">
+                  <select name="status" id="status" class="form-control"
+                    required>
                     <option value="1" selected>Active</option>
                     <option value="0">Inactive</option>
                   </select>
