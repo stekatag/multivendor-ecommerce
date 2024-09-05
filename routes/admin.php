@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Backend\AdminController;
+use App\Http\Controllers\Backend\AdminVendorProfileController;
 use App\Http\Controllers\Backend\BrandController;
 use App\Http\Controllers\Backend\CategoryController;
 use App\Http\Controllers\Backend\ChildCategoryController;
@@ -40,4 +41,8 @@ Route::middleware(['web', 'auth', 'role:admin'])
     // Brand Route
     Route::put('brand/change-status', [BrandController::class, 'changeStatus'])->name('brand.change-status');
     Route::resource('brand', BrandController::class);
+
+    // Vendor Profile Route
+    Route::put('vendor-profile/change-status', [AdminVendorProfileController::class, 'changeStatus'])->name('vendor-profile.change-status');
+    Route::resource('vendor-profile', AdminVendorProfileController::class);
   });
