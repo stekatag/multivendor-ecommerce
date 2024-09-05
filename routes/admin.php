@@ -6,6 +6,7 @@ use App\Http\Controllers\Backend\AdminVendorProfileController;
 use App\Http\Controllers\Backend\BrandController;
 use App\Http\Controllers\Backend\CategoryController;
 use App\Http\Controllers\Backend\ChildCategoryController;
+use App\Http\Controllers\Backend\ProductController;
 use App\Http\Controllers\Backend\ProfileController;
 use App\Http\Controllers\Backend\SliderController;
 use App\Http\Controllers\Backend\SubcategoryController;
@@ -43,6 +44,10 @@ Route::middleware(['web', 'auth', 'role:admin'])
     Route::resource('brand', BrandController::class);
 
     // Vendor Profile Route
-    Route::put('vendor-profile/change-status', [AdminVendorProfileController::class, 'changeStatus'])->name('vendor-profile.change-status');
     Route::resource('vendor-profile', AdminVendorProfileController::class);
+
+    // Vendor Profile Route
+    Route::get('product/get-subcategories', [ProductController::class, 'getSubcategories'])->name('product.get-subcategories');
+    Route::get('product/get-child-categories', [ProductController::class, 'getChildCategories'])->name('product.get-child-categories');
+    Route::resource('product', ProductController::class);
   });
