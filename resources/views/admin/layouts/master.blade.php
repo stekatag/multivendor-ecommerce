@@ -27,6 +27,8 @@
     <link rel="stylesheet"
       href="{{ asset('backend/assets/css/bootstrap-iconpicker.min.css') }}">
     <link rel="stylesheet"
+      href="{{ asset('backend/assets/modules/bootstrap-daterangepicker/daterangepicker.css') }}">
+    <link rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
     <link rel="stylesheet"
       href="https://cdn.datatables.net/2.0.8/css/dataTables.dataTables.min.css">
@@ -106,6 +108,9 @@
     </script>
     <script
       src="{{ asset('backend/assets/js/bootstrap-iconpicker.bundle.min.js') }}">
+    </script>
+    <script
+      src="{{ asset('backend/assets/modules/bootstrap-daterangepicker/daterangepicker.js') }}">
     </script>
     <script
       src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js">

@@ -28,6 +28,7 @@ return new class extends Migration {
             $table->double('offer_price', 8, 2)->nullable();
             $table->date('offer_start')->nullable();
             $table->date('offer_end')->nullable();
+            $table->boolean('is_new')->nullable();
             $table->boolean('is_top')->nullable();
             $table->boolean('is_best')->nullable();
             $table->boolean('is_featured')->nullable();
