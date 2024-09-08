@@ -10,6 +10,7 @@ use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Models\ChildCategory;
 use App\Traits\ImageUploadTrait;
+use Illuminate\Support\Facades\Log;
 use App\DataTables\ProductDataTable;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -64,8 +65,8 @@ class ProductController extends Controller {
         $product->slug = Str::slug($request->name);
         $product->vendor_id = Auth::user()->vendor->id;
         $product->category_id = $request->category;
-        $product->subcategory_id = $request->subcategory;
-        $product->child_category_id = $request->child_category;
+        $product->subcategory_id = $request->subcategory ?? null;
+        $product->child_category_id = $request->child_category ?? null;
         $product->brand_id = $request->brand;
         $product->qty = $request->qty;
         $product->short_description = $request->short_description;
@@ -134,5 +135,22 @@ class ProductController extends Controller {
     public function getChildCategories(Request $request) {
         $childCategories = ChildCategory::where('subcategory_id', $request->id)->get();
         return $childCategories;
+    }
+
+    public function changeStatus(Request $request) {
+        $product = Product::findOrFail($request->id);
+
+        // Explicitly cast the 'status' field to a boolean
+        $status = filter_var($request->status, FILTER_VALIDATE_BOOLEAN);
+
+        if ($request->type === 'status') {
+            $product->status = $status ? 1 : 0;
+        } else {
+            $product->{$request->type} = $status ? 1 : 0; // Dynamically update the relevant field
+        }
+
+        $product->save();
+
+        return response(['status' => 'success', 'message' => 'Status updated successfully!']);
     }
 }

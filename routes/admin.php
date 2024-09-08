@@ -49,5 +49,6 @@ Route::middleware(['web', 'auth', 'role:admin'])
     // Vendor Profile Route
     Route::get('product/get-subcategories', [ProductController::class, 'getSubcategories'])->name('product.get-subcategories');
     Route::get('product/get-child-categories', [ProductController::class, 'getChildCategories'])->name('product.get-child-categories');
+    Route::put('product/change-status', [ProductController::class, 'changeStatus'])->name('product.change-status');
     Route::resource('product', ProductController::class);
   });

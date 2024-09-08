@@ -47,4 +47,40 @@
 
 @push('scripts')
   {{ $dataTable->scripts(attributes: ['type' => 'module']) }}
+
+  <script>
+    $(document).ready(function() {
+      // Change the status or any of the switches with the toggle
+      $('body').on('click', '.change-switch', function() {
+        let isChecked = $(this).prop('checked');
+        let id = $(this).data('id');
+        let type = $(this).data(
+          'type'); // This can be is_new, is_top, is_best, or is_featured
+
+        $.ajaxSetup({
+          headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr(
+              'content')
+          }
+        });
+
+        $.ajax({
+          url: "{{ route('admin.product.change-status') }}",
+          method: 'PUT',
+          data: {
+            status: isChecked,
+            id: id,
+            type: type
+          },
+          success: function(data) {
+            toastr.success(data.message);
+          },
+          error: function(xhr, status, error) {
+            toastr.error('An error occurred: ' + error);
+          }
+        });
+      });
+
+    });
+  </script>
 @endpush

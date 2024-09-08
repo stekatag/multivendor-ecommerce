@@ -100,24 +100,15 @@
                     id="offer_price" value="{{ old('offer_price') }}">
                 </div>
 
-                <div class="row">
-                  <div class="col-md-6">
-                    <div class="form-group">
-                      <label for="offer_start_date">Offer Start Date</label>
-                      <input type="text" class="form-control datepicker"
-                        data-tribute="true" name="offer_start_date"
-                        id="offer_start_date"
-                        value="{{ old('offer_start_date') }}">
-                    </div>
-                  </div>
-                  <div class="col-md-6">
-                    <div class="form-group">
-                      <label for="offer_end_date">Offer End Date</label>
-                      <input type="text" class="form-control datepicker"
-                        data-tribute="true" name="offer_end_date"
-                        id="offer_end_date" value="{{ old('offer_end_date') }}">
-                    </div>
-                  </div>
+                <div class="form-group">
+                  <label for="offer_date_range">Offer Date Range</label>
+                  <input type="text" class="form-control" data-tribute="true"
+                    name="offer_date_range" id="offer_date_range" value=""
+                    placeholder="Select offer date range" />
+                  <input type="hidden" name="offer_start_date"
+                    id="offer_start_date" value="">
+                  <input type="hidden" name="offer_end_date" id="offer_end_date"
+                    value="">
                 </div>
 
                 <div class="form-group">
@@ -144,7 +135,7 @@
 
                 <div class="form-group">
                   <label for="long_description">Long description</label>
-                  <textarea name="long_description" id="long_description" required
+                  <textarea name="long_description" id="long_description"
                     class="form-control summernote"></textarea>
                 </div>
 
@@ -284,6 +275,38 @@
           }
         })
       })
+
+      $('#offer_date_range').daterangepicker({
+        autoUpdateInput: false,
+        locale: {
+          cancelLabel: 'Clear'
+        },
+        singleDatePicker: false, // This makes it a range picker
+        opens: 'center',
+      });
+
+      // When date is selected
+      $('#offer_date_range').on('apply.daterangepicker', function(ev,
+        picker) {
+        $(this).val(picker.startDate.format('YYYY-MM-DD') + ' - ' + picker
+          .endDate.format('YYYY-MM-DD'));
+      });
+
+      // When clear is clicked
+      $('#offer_date_range').on('cancel.daterangepicker', function(ev,
+        picker) {
+        $(this).val(''); // Clear input
+      });
+
+      // Handle form submission if you need to split the date range into two fields
+      $('form').on('submit', function(e) {
+        let range = $('#offer_date_range').val();
+        if (range) {
+          let dates = range.split(' - ');
+          $('input[name="offer_start_date"]').val(dates[0]);
+          $('input[name="offer_end_date"]').val(dates[1]);
+        }
+      });
     })
   </script>
 @endpush

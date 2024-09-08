@@ -12,73 +12,99 @@ use Yajra\DataTables\Html\Editor\Editor;
 use Yajra\DataTables\Html\Editor\Fields;
 use Yajra\DataTables\Services\DataTable;
 
-class ProductDataTable extends DataTable
-{
+class ProductDataTable extends DataTable {
     /**
      * Build the DataTable class.
      *
      * @param QueryBuilder $query Results from query() method.
      */
-    public function dataTable(QueryBuilder $query): EloquentDataTable
-    {
+    public function dataTable(QueryBuilder $query): EloquentDataTable {
         return (new EloquentDataTable($query))
-            ->addColumn('action', 'product.action')
+            ->addColumn('action', function ($query) {
+                $editBtn = "<a href='" . route('admin.slider.edit', $query->id) . "' class='btn btn-primary'><i class='far fa-edit'></i></a>";
+                $deleteBtn = "<a href='" . route('admin.slider.destroy', $query->id) . "' class='btn btn-danger ml-2 delete-item'><i class='far fa-trash-alt'></i></a>";
+
+                return $editBtn . ' ' . $deleteBtn;
+            })
+            ->addColumn('thumb_image', function ($query) {
+                return $img = "<img src='" . asset($query->thumb_image) . "' width='100' />";
+            })
+            ->addColumn('status', function ($query) {
+                return generateSwitch('status', $query->status, $query->id, true);
+            })
+            ->addColumn('categories', function ($query) {
+                $catName = '<div class="mb-1">' . ($query->category ? $query->category->name : '') . '</div>';
+                if ($query->subcategory) {
+                    $catName .= '<div class="mb-1">' . $query->subcategory->name . '</div>';
+                }
+                if ($query->childCategory) {
+                    $catName .= '<div>' . $query->childCategory->name . '</div>';
+                }
+                return $catName;
+            })
+            ->addColumn('switches', function ($query) {
+                return generateSwitch('is_new', $query->is_new, $query->id, true)
+                    . generateSwitch('is_top', $query->is_top, $query->id)
+                    . generateSwitch('is_best', $query->is_best, $query->id)
+                    . generateSwitch('is_featured', $query->is_featured, $query->id);
+            })
+
+            ->rawColumns(['thumb_image', 'action', 'status', 'categories', 'switches'])
             ->setRowId('id');
     }
 
     /**
      * Get the query source of dataTable.
      */
-    public function query(Product $model): QueryBuilder
-    {
+    public function query(Product $model): QueryBuilder {
         return $model->newQuery();
     }
 
     /**
      * Optional method if you want to use the html builder.
      */
-    public function html(): HtmlBuilder
-    {
+    public function html(): HtmlBuilder {
         return $this->builder()
-                    ->setTableId('product-table')
-                    ->columns($this->getColumns())
-                    ->minifiedAjax()
-                    //->dom('Bfrtip')
-                    ->orderBy(1)
-                    ->selectStyleSingle()
-                    ->buttons([
-                        Button::make('excel'),
-                        Button::make('csv'),
-                        Button::make('pdf'),
-                        Button::make('print'),
-                        Button::make('reset'),
-                        Button::make('reload')
-                    ]);
+            ->setTableId('product-table')
+            ->columns($this->getColumns())
+            ->minifiedAjax()
+            //->dom('Bfrtip')
+            ->orderBy(1)
+            ->selectStyleSingle()
+            ->buttons([
+                Button::make('excel'),
+                Button::make('csv'),
+                Button::make('pdf'),
+                Button::make('print'),
+                Button::make('reset'),
+                Button::make('reload')
+            ]);
     }
 
     /**
      * Get the dataTable columns definition.
      */
-    public function getColumns(): array
-    {
+    public function getColumns(): array {
         return [
-            Column::computed('action')
-                  ->exportable(false)
-                  ->printable(false)
-                  ->width(60)
-                  ->addClass('text-center'),
             Column::make('id'),
-            Column::make('add your columns'),
-            Column::make('created_at'),
-            Column::make('updated_at'),
+            Column::make('thumb_image'),
+            Column::make('name'),
+            Column::make('price'),
+            Column::make('categories'),
+            Column::make('switches'),
+            Column::make('status'),
+            Column::computed('action')
+                ->exportable(false)
+                ->printable(false)
+                ->width(150)
+                ->addClass('text-center'),
         ];
     }
 
     /**
      * Get the filename for export.
      */
-    protected function filename(): string
-    {
+    protected function filename(): string {
         return 'Product_' . date('YmdHis');
     }
 }
