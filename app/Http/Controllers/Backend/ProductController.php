@@ -10,7 +10,6 @@ use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Models\ChildCategory;
 use App\Traits\ImageUploadTrait;
-use Illuminate\Support\Facades\Log;
 use App\DataTables\ProductDataTable;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
