@@ -103,21 +103,84 @@ class ProductController extends Controller {
      * Show the form for editing the specified resource.
      */
     public function edit(string $id) {
-        //
+        $product = Product::findOrFail($id);
+        $categories = Category::where('status', 1)->get();
+        $subcategories = Subcategory::where('category_id', $product->category_id)->get();
+        $childCategories = ChildCategory::where('subcategory_id', $product->subcategory_id)->get();
+        $brands = Brand::where('status', 1)->get();
+
+        return view('admin.product.edit', compact('product', 'categories', 'subcategories', 'childCategories', 'brands'));
     }
 
     /**
      * Update the specified resource in storage.
      */
     public function update(Request $request, string $id) {
-        //
+        $request->validate([
+            'thumb_image' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif,svg', 'max:2048'],
+            'name' => ['required', 'string', 'max:255'],
+            'category' => ['required'],
+            'brand' => ['required'],
+            'price' => ['required'],
+            'qty' => ['required'],
+            'video_link' => ['nullable', 'url'],
+            'short_description' => ['required', 'max:600'],
+            'long_description' => ['required'],
+            'is_new' => ['required'],
+            "is_top" => ['required'],
+            'is_featured' => ['required'],
+            'is_best' => ['required'],
+            'seo_title' => ['nullable', 'max:255'],
+            'seo_description' => ['nullable', 'max:350'],
+            'status' => ['required'],
+        ]);
+
+        $product = Product::findOrFail($id);
+
+        $imagePath = $this->updateImage($request, 'thumb_image', 'uploads/products/', $product->thumb_image);
+
+        $product->thumb_image = empty(!$imagePath) ? $imagePath : $product->thumb_image;
+        $product->name = $request->name;
+        $product->slug = Str::slug($request->name);
+        $product->vendor_id = Auth::user()->vendor->id;
+        $product->category_id = $request->category;
+        $product->subcategory_id = $request->subcategory ?? null;
+        $product->child_category_id = $request->child_category ?? null;
+        $product->brand_id = $request->brand;
+        $product->qty = $request->qty;
+        $product->short_description = $request->short_description;
+        $product->long_description = $request->long_description;
+        $product->video_link = $request->video_link;
+        $product->sku = $request->sku;
+        $product->price = $request->price;
+        $product->offer_price = $request->offer_price;
+        $product->offer_start = $request->offer_start_date;
+        $product->offer_end = $request->offer_end_date;
+        $product->is_new = $request->is_new;
+        $product->is_top = $request->is_top;
+        $product->is_best = $request->is_best;
+        $product->is_featured = $request->is_featured;
+        $product->status = $request->status;
+        $product->is_approved = 1;
+        $product->seo_title = $request->seo_title;
+        $product->seo_description = $request->seo_description;
+
+        $product->save();
+
+        toastr()->success('Product updated successfully!');
+
+        return redirect()->route('admin.product.index');
     }
 
     /**
      * Remove the specified resource from storage.
      */
     public function destroy(string $id) {
-        //
+        $product = Product::findOrFail($id);
+        $this->deleteImage($product->thumb_image);
+        $product->delete();
+
+        return response(['status' => 'success', 'message' => 'Brand deleted successfully!']);
     }
 
     /**

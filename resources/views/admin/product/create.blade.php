@@ -225,9 +225,17 @@
 @push('scripts')
   <script>
     $(document).ready(function() {
+      // When main category changes, clear both subcategory and child category fields
       $('body').on('change', '.main-category', function(e) {
         let id = $(this).val();
 
+        // Clear the subcategory and child-category fields first
+        $('.subcategory').html(
+          '<option value="">Select a subcategory</option>');
+        $('.child-category').html(
+          '<option value="">Select a child category</option>');
+
+        // Fetch new subcategories based on the selected main category
         $.ajax({
           method: 'GET',
           url: "{{ route('admin.product.get-subcategories') }}",
@@ -235,25 +243,28 @@
             id: id
           },
           success: function(data) {
-            $('.subcategory').html(
-              '<option value="">Select a subcategory</option>');
-
+            // Populate subcategory options
             $.each(data, function(key, value) {
               $('.subcategory').append(
                 `<option value="${value.id}">${value.name}</option>`
-              )
-            })
+              );
+            });
           },
           error: function(xhr, status, error) {
             toastr.error('An error occurred: ' + error);
           }
-        })
-      })
+        });
+      });
 
-      // Get child categories
+      // When subcategory changes, fetch child categories
       $('body').on('change', '.subcategory', function(e) {
         let id = $(this).val();
 
+        // Clear the child-category field first
+        $('.child-category').html(
+          '<option value="">Select a child category</option>');
+
+        // Fetch new child categories based on the selected subcategory
         $.ajax({
           method: 'GET',
           url: "{{ route('admin.product.get-child-categories') }}",
@@ -261,21 +272,20 @@
             id: id
           },
           success: function(data) {
-            $('.child-category').html(
-              '<option value="">Select a child category</option>');
-
+            // Populate child category options
             $.each(data, function(key, value) {
               $('.child-category').append(
                 `<option value="${value.id}">${value.name}</option>`
-              )
-            })
+              );
+            });
           },
           error: function(xhr, status, error) {
             toastr.error('An error occurred: ' + error);
           }
-        })
-      })
+        });
+      });
 
+      // Date range picker logic
       $('#offer_date_range').daterangepicker({
         autoUpdateInput: false,
         locale: {
@@ -307,6 +317,6 @@
           $('input[name="offer_end_date"]').val(dates[1]);
         }
       });
-    })
+    });
   </script>
 @endpush
