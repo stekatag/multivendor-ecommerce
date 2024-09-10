@@ -7,6 +7,7 @@ use App\Http\Controllers\Backend\BrandController;
 use App\Http\Controllers\Backend\CategoryController;
 use App\Http\Controllers\Backend\ChildCategoryController;
 use App\Http\Controllers\Backend\ProductController;
+use App\Http\Controllers\Backend\ProductImageGalleryController;
 use App\Http\Controllers\Backend\ProfileController;
 use App\Http\Controllers\Backend\SliderController;
 use App\Http\Controllers\Backend\SubcategoryController;
@@ -46,9 +47,10 @@ Route::middleware(['web', 'auth', 'role:admin'])
     // Vendor Profile Route
     Route::resource('vendor-profile', AdminVendorProfileController::class);
 
-    // Vendor Profile Route
+    // Product Route
     Route::get('product/get-subcategories', [ProductController::class, 'getSubcategories'])->name('product.get-subcategories');
     Route::get('product/get-child-categories', [ProductController::class, 'getChildCategories'])->name('product.get-child-categories');
     Route::put('product/change-status', [ProductController::class, 'changeStatus'])->name('product.change-status');
     Route::resource('product', ProductController::class);
+    Route::resource('product-image-gallery', ProductImageGalleryController::class);
   });
