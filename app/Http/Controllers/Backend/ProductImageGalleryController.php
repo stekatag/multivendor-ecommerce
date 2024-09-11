@@ -74,6 +74,10 @@ class ProductImageGalleryController extends Controller {
      * Remove the specified resource from storage.
      */
     public function destroy(string $id) {
-        //
+        $productGalleryImage = ProductImageGallery::findOrFail($id);
+        $this->deleteImage($productGalleryImage->image);
+        $productGalleryImage->delete();
+
+        return response(['status' => 'success', 'message' => 'Image deleted successfully!']);
     }
 }
