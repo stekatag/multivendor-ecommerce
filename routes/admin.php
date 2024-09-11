@@ -8,6 +8,7 @@ use App\Http\Controllers\Backend\CategoryController;
 use App\Http\Controllers\Backend\ChildCategoryController;
 use App\Http\Controllers\Backend\ProductController;
 use App\Http\Controllers\Backend\ProductImageGalleryController;
+use App\Http\Controllers\Backend\ProductVariantController;
 use App\Http\Controllers\Backend\ProfileController;
 use App\Http\Controllers\Backend\SliderController;
 use App\Http\Controllers\Backend\SubcategoryController;
@@ -53,4 +54,5 @@ Route::middleware(['web', 'auth', 'role:admin'])
     Route::put('product/change-status', [ProductController::class, 'changeStatus'])->name('product.change-status');
     Route::resource('product', ProductController::class);
     Route::resource('product-image-gallery', ProductImageGalleryController::class);
+    Route::resource('product-variant', ProductVariantController::class);
   });

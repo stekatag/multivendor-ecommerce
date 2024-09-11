@@ -17,7 +17,7 @@ class ProductImageGalleryController extends Controller {
     public function index(Request $request, ProductImageGalleryDataTable $dataTable) {
         $product = Product::findOrFail($request->product);
         $allowedMimeTypes = ['jpeg', 'png', 'jpg', 'gif', 'webp'];
-        return $dataTable->render('admin.product-image-gallery.index', compact('product', 'allowedMimeTypes'));
+        return $dataTable->render('admin.product.product-image-gallery.index', compact('product', 'allowedMimeTypes'));
     }
 
     /**

@@ -25,12 +25,12 @@ class ProductDataTable extends DataTable {
                 $deleteBtn = "<a href='" . route('admin.product.destroy', $query->id) . "' class='btn btn-danger ml-2 delete-item'><i class='far fa-trash-alt'></i></a>";
                 $settingsBtn = '                    
                     <div class="dropdown d-inline dropleft ml-2">
-                      <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      <button class="btn btn-info dropdown-toggle" type="button" id="dropdownMenuButton2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <i class="fas fa-cog"></i>
                       </button>
                       <div class="dropdown-menu">
-                        <a class="dropdown-item has-icon" href="' . route('admin.product-image-gallery.index', ['product' => $query->id]) . '"><i class="far fa-heart"></i> Image Gallery</a>
-                        <a class="dropdown-item has-icon" href="#"><i class="far fa-file"></i> Another action</a>
+                        <a class="dropdown-item has-icon" href="' . route('admin.product-image-gallery.index', ['product' => $query->id]) . '"><i class="far fa-image"></i>Image Gallery</a>
+                        <a class="dropdown-item has-icon" href="' . route('admin.product-variant.index', ['product' => $query->id]) . '"><i class="fas fa-layer-group"></i>Product Variant</a>
                         <a class="dropdown-item has-icon" href="#"><i class="far fa-clock"></i> Something else here</a>
                       </div>
                     </div>';

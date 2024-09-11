@@ -23,7 +23,7 @@ function generateSwitch($name, $status, $id, $isFirst = false) {
   }
 
   return '
-  <label class="custom-switch ' . $marginClass . ' d-block">
+  <label class="custom-switch ' . $marginClass . ' d-block mt-1">
       <input type="checkbox" name="custom-switch-checkbox" class="custom-switch-input change-switch" data-id="' . $id . '" data-type="' . $name . '" ' . $checked . '>
       <span class="custom-switch-indicator"></span>
       <span class="custom-switch-description">' . $labelText . '</span>

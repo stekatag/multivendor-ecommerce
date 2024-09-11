@@ -10,7 +10,6 @@
         <div class="breadcrumb-item">Table</div>
       </div>
     </div>
-
     <div class="section-body">
 
       <div class="row">
@@ -18,6 +17,11 @@
           <div class="card">
             <div class="card-header">
               <h4>Product: {{ $product->name }}</h4>
+              <div class="card-header-action">
+                <a href="{{ route('admin.product.index') }}">
+                  <button class="btn btn-primary ">View All Products</button>
+                </a>
+              </div>
             </div>
 
             <div class="card-body">
