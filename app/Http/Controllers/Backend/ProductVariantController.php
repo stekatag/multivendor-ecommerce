@@ -57,20 +57,48 @@ class ProductVariantController extends Controller {
      * Show the form for editing the specified resource.
      */
     public function edit(string $id) {
-        //
+        $productVariant = ProductVariant::findOrFail($id);
+        return view('admin.product.product-variant.edit', compact('productVariant'));
     }
 
     /**
      * Update the specified resource in storage.
      */
     public function update(Request $request, string $id) {
-        //
+        $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'status' => ['required']
+        ]);
+
+        $productVariant = ProductVariant::findOrFail($id);
+        $productVariant->name = $request->name;
+        $productVariant->status = $request->status;
+
+        $productVariant->save();
+
+        toastr()->success('Product variant updated successfully');
+
+        return redirect()->route('admin.product-variant.index', ['product' => $productVariant->product_id]);
     }
 
     /**
      * Remove the specified resource from storage.
      */
     public function destroy(string $id) {
-        //
+        $productVariant = ProductVariant::findOrFail($id);
+        $productVariant->delete();
+
+        return response(['status' => 'success', 'message' => 'Product variant deleted successfully']);
+    }
+
+    public function changeStatus(Request $request) {
+        $productVariant = ProductVariant::findOrFail($request->id);
+
+        // Explicitly cast the 'status' field to a boolean
+        $status = filter_var($request->status, FILTER_VALIDATE_BOOLEAN);
+        $productVariant->status = $status ? 1 : 0;
+        $productVariant->save();
+
+        return response(['status' => 'success', 'message' => 'Status updated successfully!']);
     }
 }

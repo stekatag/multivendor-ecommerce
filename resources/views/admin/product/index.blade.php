@@ -74,13 +74,21 @@
           },
           success: function(data) {
             toastr.success(data.message);
+            // Dynamically update the switch label text based on the new status
+            let switchLabel = isChecked ? 'Active' : 'Inactive';
+            // Only update the status label if the switch type is 'status'
+            if (type === 'status') {
+              $('input[data-id="' + id + '"][data-type="status"]')
+                .closest('.custom-switch')
+                .find('.custom-switch-description')
+                .text(switchLabel);
+            }
           },
           error: function(xhr, status, error) {
             toastr.error('An error occurred: ' + error);
           }
         });
       });
-
     });
   </script>
 @endpush

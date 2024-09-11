@@ -59,7 +59,7 @@
         let isChecked = $(this).prop('checked');
         let id = $(this).data('id');
         let type = $(this).data(
-          'type'); // This can be is_new, is_top, is_best, or is_featured
+          'type');
 
         $.ajaxSetup({
           headers: {
@@ -69,7 +69,7 @@
         });
 
         $.ajax({
-          url: "{{ route('admin.product.change-status') }}",
+          url: "{{ route('admin.product-variant.change-status') }}",
           method: 'PUT',
           data: {
             status: isChecked,
@@ -78,6 +78,15 @@
           },
           success: function(data) {
             toastr.success(data.message);
+            // Dynamically update the switch label text based on the new status
+            let switchLabel = isChecked ? 'Active' : 'Inactive';
+            // Only update the status label if the switch type is 'status'
+            if (type === 'status') {
+              $('input[data-id="' + id + '"][data-type="status"]')
+                .closest('.custom-switch')
+                .find('.custom-switch-description')
+                .text(switchLabel);
+            }
           },
           error: function(xhr, status, error) {
             toastr.error('An error occurred: ' + error);
