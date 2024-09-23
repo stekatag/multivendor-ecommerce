@@ -69,7 +69,7 @@
         });
 
         $.ajax({
-          url: "{{ route('admin.product-variant.change-status') }}",
+          url: "{{ route('admin.product-variant-item.change-status') }}",
           method: 'PUT',
           data: {
             status: isChecked,

@@ -12,6 +12,8 @@ use App\Models\ChildCategory;
 use App\Traits\ImageUploadTrait;
 use App\DataTables\ProductDataTable;
 use App\Http\Controllers\Controller;
+use App\Models\ProductImageGallery;
+use App\Models\ProductVariant;
 use Illuminate\Support\Facades\Auth;
 
 class ProductController extends Controller {
@@ -177,7 +179,24 @@ class ProductController extends Controller {
      */
     public function destroy(string $id) {
         $product = Product::findOrFail($id);
+
+        // Delete product thumb image
         $this->deleteImage($product->thumb_image);
+
+        // Delete product gallery images
+        $productImageGallery = ProductImageGallery::where('product_id', $product->id)->get();
+        foreach ($productImageGallery as $image) {
+            $this->deleteImage($image->image);
+            $image->delete();
+        }
+
+        // Delete product variants if any
+        $variants = ProductVariant::where('product_id', $product->id)->get();
+        foreach ($variants as $variant) {
+            $variant->productVariantItems()->delete();
+            $variant->delete();
+        }
+
         $product->delete();
 
         return response(['status' => 'success', 'message' => 'Brand deleted successfully!']);
