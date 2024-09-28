@@ -2,20 +2,20 @@
 
 namespace App\Http\Controllers\Backend;
 
-use App\Http\Controllers\Controller;
 use App\Models\Vendor;
-use App\Traits\ImageUploadTrait;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use App\Traits\ImageUploadTrait;
 use Illuminate\Support\Facades\Auth;
 
-class AdminVendorProfileController extends Controller {
+class VendorShopProfileController extends Controller {
     use ImageUploadTrait;
     /**
      * Display a listing of the resource.
      */
     public function index() {
         $profile = Vendor::where('user_id', Auth::user()->id)->first();
-        return view('admin.vendor-profile.index', compact('profile'));
+        return view('vendor.shop-profile.index', compact('profile'));
     }
 
     /**

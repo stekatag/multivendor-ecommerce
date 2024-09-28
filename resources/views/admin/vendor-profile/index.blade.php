@@ -32,6 +32,12 @@
                     name="banner" id="banner">
                 </div>
                 <div class="form-group">
+                  <label for="shop_name">Shop Name</label>
+                  <input type="text" class="form-control" data-tribute="true"
+                    placeholder="Your shop name" name="shop_name" id="shop_name"
+                    value="{{ $profile->shop_name }}">
+                </div>
+                <div class="form-group">
                   <label for="phone">Phone number</label>
                   <input type="text" class="form-control" data-tribute="true"
                     placeholder="089..." name="phone" id="phone"
