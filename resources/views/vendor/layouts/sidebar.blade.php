@@ -6,13 +6,29 @@
   <a href="{{ route('vendor.dashboard') }}" class="dash_logo"><img
       src="images/logo.png" alt="logo" class="img-fluid"></a>
   <ul class="dashboard_link">
-    <li><a class="active" href="{{ route('vendor.dashboard') }}"><i
-          class="fas fa-tachometer"></i>Dashboard</a></li>
-    <li><a href="{{ route('vendor.shop-profile.index') }}"><i
-          class="far fa-folder"></i>
-        Shop profile</a></li>
-    <li><a href="{{ route('vendor.profile') }}"><i class="far fa-user"></i> My
-        Profile</a></li>
+    <li>
+      <a class="active" href="{{ route('vendor.dashboard') }}">
+        <i class="fas fa-tachometer"></i>Dashboard
+      </a>
+    </li>
+    <li>
+      <a href="{{ route('vendor.product.index') }}">
+        <i class="far fa-folder"></i>
+        Products
+      </a>
+    </li>
+    <li>
+      <a href="{{ route('vendor.shop-profile.index') }}">
+        <i class="far fa-folder"></i>
+        Shop profile
+      </a>
+    </li>
+    <li>
+      <a href="{{ route('vendor.profile') }}">
+        <i class="far fa-user"></i>
+        My Profile
+      </a>
+    </li>
     <li>
       <form method="POST" action="{{ route('logout') }}">
         @csrf
