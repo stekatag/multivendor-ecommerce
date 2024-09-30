@@ -11,7 +11,11 @@
             <h3><i class="far fa-user"></i>Products</h3>
             <div class="d-flex justify-content-start justify-content-md-end">
               <a href="{{ route('vendor.product.create') }}"
-                class="btn btn-primary mb-2">Create New</a>
+                class="btn btn-primary mb-2 d-flex align-items-center"
+                style="gap: 0.5rem;">
+                <i class="fas fa-plus"></i>
+                Create New
+              </a>
             </div>
 
             <div class="wsus__dashboard_profile">
@@ -46,7 +50,7 @@
         });
 
         $.ajax({
-          url: "{{ route('admin.product.change-status') }}",
+          url: "{{ route('vendor.product.change-status') }}",
           method: 'PUT',
           data: {
             status: isChecked,

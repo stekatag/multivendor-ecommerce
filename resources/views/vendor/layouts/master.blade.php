@@ -32,6 +32,9 @@
       href="{{ asset('backend/assets/modules/summernote/summernote-bs4.css') }}">
     <link rel="stylesheet" href="{{ asset('frontend/css/style.css') }}">
     <link rel="stylesheet" href="{{ asset('frontend/css/responsive.css') }}">
+    <script src="{{ asset('backend/assets/modules/moment.min.js') }}"></script>
+    <link rel="stylesheet"
+      href="{{ asset('backend/assets/modules/bootstrap-daterangepicker/daterangepicker.css') }}">
     <link rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
     <link rel="stylesheet"
@@ -109,6 +112,9 @@
     <script src="{{ asset('frontend/js/jquery.classycountdown.js') }}"></script>
     <script
       src="{{ asset('backend/assets/modules/summernote/summernote-bs4.js') }}">
+    </script>
+    <script
+      src="{{ asset('backend/assets/modules/bootstrap-daterangepicker/daterangepicker.js') }}">
     </script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js">
     </script>

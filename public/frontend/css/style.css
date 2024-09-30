@@ -9409,14 +9409,16 @@ a:not([href]):not([class]):hover {
 }
 
 /* extra css end here */
-.wsus__input input {
+.wsus__input input,
+.wsus__input select,
+.wsus__input textarea {
     width: 100%;
     padding: 10px;
     border-radius: 3px;
     font-size: 16px;
     font-weight: 400;
     color: #353535;
-    border: 1px solid #eee;
+    border: 1px solid #d6d6d6;
     margin-bottom: 20px;
 }
 
