@@ -3100,11 +3100,7 @@ PPRODUCT PAGE START
 }
 
 .form-check {
-    margin-bottom: 20px;
-}
-
-.form-check input {
-    border-radius: 0 !important;
+    margin-bottom: 10px;
 }
 
 .form-check-input:checked {
@@ -7166,6 +7162,7 @@ WISHLIST PAGE START
     padding: 30px;
     border-radius: 5px;
     box-shadow: rgba(99, 99, 99, 0.3) 0px 0px 8px 0px;
+    overflow: auto;
 }
 
 .wsus__dash_pro_area h4 {

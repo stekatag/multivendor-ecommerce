@@ -20,7 +20,53 @@ class VendorProductDataTable extends DataTable {
      */
     public function dataTable(QueryBuilder $query): EloquentDataTable {
         return (new EloquentDataTable($query))
-            ->addColumn('action', 'vendorproduct.action')
+            ->addColumn('action', function ($query) {
+                $editBtn = "<a href='" . route('vendor.product.edit', $query->id) . "' class='btn btn-primary'><i class='far fa-edit'></i></a>";
+                $deleteBtn = "<a href='" . route('vendor.product.destroy', $query->id) . "' class='btn btn-danger delete-item'><i class='far fa-trash-alt'></i></a>";
+                $settingsBtn = '
+                <div class="dropdown d-inline">
+                    <button class="btn btn-info text-white dropdown-toggle" type="button" id="dropdownMenuButton2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="fas fa-cog"></i>
+                    </button>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item has-icon" href="' . route('admin.product-image-gallery.index', ['product' => $query->id]) . '"><i class="far fa-image"></i>Image Gallery</a>
+                        <a class="dropdown-item has-icon" href="' . route('admin.product-variant.index', ['product' => $query->id]) . '"><i class="fas fa-layer-group"></i>Product Variant</a>
+                    </div>
+                </div>';
+
+                // Wrap all buttons in a flexbox container
+                return '
+                <div class="d-flex align-items-center" style="gap: 10px;">
+                    ' . $editBtn . '
+                    ' . $deleteBtn . '
+                    ' . $settingsBtn . '
+                </div>';
+            })
+
+            ->addColumn('thumb_image', function ($query) {
+                return $img = "<img src='" . asset($query->thumb_image) . "' width='100' />";
+            })
+            ->addColumn('status', function ($query) {
+                return generateSwitch('status', $query->status, $query->id, true, true);
+            })
+            ->addColumn('categories', function ($query) {
+                $catName = '<div class="mb-1">' . ($query->category ? $query->category->name : '') . '</div>';
+                if ($query->subcategory) {
+                    $catName .= '<div class="mb-1">' . $query->subcategory->name . '</div>';
+                }
+                if ($query->childCategory) {
+                    $catName .= '<div>' . $query->childCategory->name . '</div>';
+                }
+                return $catName;
+            })
+            ->addColumn('switches', function ($query) {
+                return generateSwitch('is_new', $query->is_new, $query->id, true, true)
+                    . generateSwitch('is_top', $query->is_top, $query->id, false, true)
+                    . generateSwitch('is_best', $query->is_best, $query->id, false, true)
+                    . generateSwitch('is_featured', $query->is_featured, $query->id, false, true);
+            })
+
+            ->rawColumns(['thumb_image', 'action', 'status', 'categories', 'switches'])
             ->setRowId('id');
     }
 
@@ -57,15 +103,18 @@ class VendorProductDataTable extends DataTable {
      */
     public function getColumns(): array {
         return [
+            Column::make('id'),
+            Column::make('thumb_image'),
+            Column::make('name'),
+            Column::make('price'),
+            Column::make('categories'),
+            Column::make('switches')->width(150),
+            Column::make('status')->width(150),
             Column::computed('action')
                 ->exportable(false)
                 ->printable(false)
-                ->width(60)
+                ->width(200)
                 ->addClass('text-center'),
-            Column::make('id'),
-            Column::make('add your columns'),
-            Column::make('created_at'),
-            Column::make('updated_at'),
         ];
     }
 

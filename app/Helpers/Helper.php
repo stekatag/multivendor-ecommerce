@@ -10,8 +10,8 @@ function setActive(array $route) {
   }
 }
 
-function generateSwitch($name, $status, $id, $isFirst = false) {
-  // Conditionally add 'mt-2' class only if it's not the first switch
+function generateSwitch($name, $status, $id, $isFirst = false, $useBootstrap = false) {
+  // Conditionally add 'mt-2' class only if it's not the first switch (for custom switch)
   $marginClass = $isFirst ? '' : 'mt-2';
   $checked = $status == 1 ? 'checked' : '';
 
@@ -22,6 +22,16 @@ function generateSwitch($name, $status, $id, $isFirst = false) {
     $labelText = ucfirst(str_replace('_', ' ', $name)); // Default label text
   }
 
+  // If $useBootstrap is true, use Bootstrap 5's form-switch styles
+  if ($useBootstrap) {
+    return '
+      <div class="form-check form-switch">
+          <input class="form-check-input" type="checkbox" id="switch_' . $id . '_' . $name . '" data-id="' . $id . '" data-type="' . $name . '" ' . $checked . '>
+          <label class="form-check-label" for="switch_' . $id . '_' . $name . '">' . $labelText . '</label>
+      </div>';
+  }
+
+  // Custom switch for admin with custom styles
   return '
   <label class="custom-switch ' . $marginClass . ' d-block">
       <input type="checkbox" name="custom-switch-checkbox" class="custom-switch-input change-switch" data-id="' . $id . '" data-type="' . $name . '" ' . $checked . '>
